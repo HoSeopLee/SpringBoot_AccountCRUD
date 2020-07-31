@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.accountInfo.repository.AccountInfoRepository">
+    <select id="getAccountInfo" resultType="com.example.accountInfo.model.AccountInfoModel">
+        SELECT
+            id,
+            bankName,
+            bankNum,
+            bankPrice,
+            userInfo_id
+        FROM
+            bankAccount
+    </select>
+    <select id="getUserAccountInfo" resultType="com.example.accountInfo.model.AccountInfoModel" parameterType="int">
+        SELECT
+            id,
+            bankName,
+            bankNum,
+            bankPrice,
+            userInfo_id
+        FROM
+            bankAccount
+        WHERE
+            userInfo_id = #{id}
+    </select>
+
+    <insert id="insertAccountInfo" parameterType="com.example.accountInfo.model.AccountInfoModel">
+        INSERT
+        INTO
+            bankAccount(bankName,bankNum,bankPrice,userInfo_id)
+        VALUES
+            ( #{bankName},#{bankNum},#{bankPrice},#{userInfo_id});
+    </insert>
+        <update id="updateAccountInfo" parameterType="com.example.accountInfo.model.AccountInfoModel">
+        UPDATE
+        bankAccount
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="bankName != null">
+                bankName = #{bankName},
+            </if>
+            <if test="bankNum != null">
+                bankNum = #{bankNum},
+            </if>
+            <if test="bankPrice != null">
+                bankPrice = #{bankPrice},
+            </if>
+            <if test="userInfo_id != null">
+                userInfo_id = #{userInfo_id}
+            </if>
+        </trim>
+        WHERE
+        id=#{id}
+        AND
+        userInfo_id=#{userInfo_id}
+    </update>
+    <delete id="deleteAccountInfo" parameterType="int">
+        DELETE
+        FROM bankAccount
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

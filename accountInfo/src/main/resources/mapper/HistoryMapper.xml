@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.accountInfo.repository.AccountHistoryRepository">
+    <select id="getHistoryList" resultType="com.example.accountInfo.model.AccountHistoryModel" parameterType="int" >
+        SELECT
+            id,
+            historyTitle,
+            historyPrice,
+            bankAccount_id
+        FROM
+            accountHistory
+        WHERE
+            bankAccount_id = #{id}
+    </select>
+    <insert id="insertHistory" parameterType="com.example.accountInfo.model.AccountHistoryModel">
+        INSERT
+        INTO
+            accountHistory(historyTitle,historyPrice,bankAccount_id)
+        VALUES
+            ( #{historyTitle},#{historyPrice},#{bankAccount_id});
+    </insert>
+    <update id="updateHistory" parameterType="com.example.accountInfo.model.AccountHistoryModel">
+        UPDATE
+        accountHistory
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="historyTitle != null">
+                historyTitle = #{historyTitle},
+            </if>
+            <if test="historyPrice != null">
+                historyPrice = #{historyPrice}
+            </if>
+        </trim>
+        WHERE
+        id=#{id}
+    </update>
+    <delete id="deleteHistory" parameterType="int">
+        DELETE
+        FROM accountHistory
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
